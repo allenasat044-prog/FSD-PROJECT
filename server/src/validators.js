@@ -21,7 +21,7 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
-const tags = z.array(z.string().trim().min(1).max(20)).max(5);
+const tags = z.array(z.string().trim().toLowerCase().min(1).max(20)).max(5);
 
 export const artworkCreateSchema = z.object({
   title: z.string().trim().min(1, "Title is required").max(80),
@@ -41,10 +41,13 @@ export const artworkUpdateSchema = z
   .refine((v) => Object.keys(v).length > 0, "Send at least one field to update");
 
 export const artworkListQuery = z.object({
-  scope: z.enum(["public", "mine"]).default("public"),
+  scope: z.enum(["public", "mine", "liked"]).default("public"),
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(50).default(12),
   search: z.string().trim().max(50).optional(),
+  sort: z.enum(["new", "top"]).default("new"),
+  source: z.enum(["camera", "video", "image"]).optional(),
+  tag: z.string().trim().toLowerCase().max(20).optional(),
 });
 
 export const presetSchema = z.object({

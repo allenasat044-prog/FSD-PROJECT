@@ -7,9 +7,12 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "test": "node --test tests/api.test.js tests/crud.test.js"
+    "test": "node --test tests/api.test.js tests/crud.test.js",
+    "seed:gallery": "node src/seed/gallery.js"
   },
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -21,5 +24,7 @@
     "mongoose": "^8.8.1",
     "zod": "^3.23.8"
   },
-  "devDependencies": { "supertest": "^7.0.0" }
+  "devDependencies": {
+    "supertest": "^7.0.0"
+  }
 }

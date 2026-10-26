@@ -28,7 +28,7 @@ test("malformed JSON returns 400", async () => {
 });
 
 test("protected routes require a token", async () => {
-  for (const [method, url] of [["get", "/api/auth/me"], ["post", "/api/artworks"], ["get", "/api/presets"], ["delete", "/api/artworks/123"]]) {
+  for (const [method, url] of [["get", "/api/auth/me"], ["post", "/api/artworks"], ["get", "/api/presets"], ["delete", "/api/artworks/123"], ["post", "/api/artworks/123/like"]]) {
     const res = await request(app)[method](url).send({});
     assert.equal(res.status, 401, `${method} ${url}`);
   }

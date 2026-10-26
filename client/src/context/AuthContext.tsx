@@ -6,6 +6,8 @@ interface AuthValue {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
+  /** Used after social sign-in: store the token the server gave us and load the user. */
+  loginWithToken: (token: string) => Promise<void>;
   logout: () => void;
 }
 const Ctx = createContext<AuthValue>(null!);
@@ -24,6 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user, loading,
     login: async (email, password) => { const r = await api.login({ email, password }); setToken(r.token); setUser(r.user); },
     register: async (name, email, password) => { const r = await api.register({ name, email, password }); setToken(r.token); setUser(r.user); },
+    loginWithToken: async (token) => { setToken(token); try { setUser(await api.me()); } catch (e) { setToken(null); throw e; } },
     logout: () => { setToken(null); setUser(null); },
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

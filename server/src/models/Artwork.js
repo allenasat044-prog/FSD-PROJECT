@@ -25,11 +25,15 @@ const artworkSchema = new mongoose.Schema(
     sourceType: { type: String, enum: ["camera", "video", "image"], required: true },
     isPublic: { type: Boolean, default: false },
     tags: { type: [String], default: [] },
+    likes: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], default: [] }, // who liked it (one like per user)
+    likeCount: { type: Number, default: 0, min: 0 },                                       // denormalised so "Top" sorting is a plain index lookup
   },
   { timestamps: true }
 );
 
 artworkSchema.index({ isPublic: 1, createdAt: -1 });
+artworkSchema.index({ isPublic: 1, likeCount: -1, createdAt: -1 });
+artworkSchema.index({ isPublic: 1, tags: 1 });
 artworkSchema.index({ user: 1, createdAt: -1 });
 
 export const Artwork = mongoose.model("Artwork", artworkSchema);

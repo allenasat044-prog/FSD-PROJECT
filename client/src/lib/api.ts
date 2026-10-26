@@ -6,15 +6,19 @@ const KEY = "ascii_cam_token";
 export const getToken = () => localStorage.getItem(KEY);
 export const setToken = (t: string | null) => (t ? localStorage.setItem(KEY, t) : localStorage.removeItem(KEY));
 
-export interface User { _id: string; name: string; email: string; role: "user" | "admin" }
+export interface User { _id: string; name: string; email: string; role: "user" | "admin"; avatar?: string; providers?: string[] }
 export interface Artwork {
   _id: string; title: string; text?: string; thumbnail?: string; cols: number; rowCount: number;
   settings: Settings; sourceType: "camera" | "video" | "image"; isPublic: boolean; tags: string[];
   user: string | { _id: string; name: string }; createdAt: string;
+  likeCount: number; likedByMe: boolean;
 }
 export interface Preset { _id: string; name: string; settings: Settings }
 export interface Faq { _id: string; question: string; answer: string }
 export interface Page<T> { items: T[]; page: number; pages: number; total: number }
+export interface ArtworkQuery {
+  scope: "public" | "mine" | "liked"; page: number; sort?: "new" | "top"; search?: string; source?: Artwork["sourceType"]; tag?: string;
+}
 export type NewArtwork = Pick<Artwork, "title" | "text" | "thumbnail" | "cols" | "rowCount" | "settings" | "sourceType" | "isPublic" | "tags">;
 
 export class ApiError extends Error {
@@ -44,10 +48,17 @@ async function request<T>(path: string, method = "GET", body?: unknown): Promise
 export const api = {
   register: (b: { name: string; email: string; password: string }) => request<{ token: string; user: User }>("/auth/register", "POST", b),
   login: (b: { email: string; password: string }) => request<{ token: string; user: User }>("/auth/login", "POST", b),
+  providers: () => request<{ google: boolean; github: boolean }>("/auth/providers"),
   me: () => request<{ user: User }>("/auth/me").then((r) => r.user),
 
-  listArtworks: (q: { scope: "public" | "mine"; page: number; search?: string }) =>
-    request<Page<Artwork>>(`/artworks?scope=${q.scope}&page=${q.page}&limit=12${q.search ? `&search=${encodeURIComponent(q.search)}` : ""}`),
+  listArtworks: (q: ArtworkQuery) => {
+    const p = new URLSearchParams({ scope: q.scope, page: String(q.page), limit: "12", sort: q.sort ?? "new" });
+    if (q.search) p.set("search", q.search);
+    if (q.source) p.set("source", q.source);
+    if (q.tag) p.set("tag", q.tag);
+    return request<Page<Artwork>>(`/artworks?${p}`);
+  },
+  toggleLike: (id: string) => request<{ liked: boolean; likeCount: number }>(`/artworks/${id}/like`, "POST"),
   getArtwork: (id: string) => request<{ artwork: Artwork }>(`/artworks/${id}`).then((r) => r.artwork),
   createArtwork: (b: NewArtwork) => request<{ artwork: Artwork }>("/artworks", "POST", b).then((r) => r.artwork),
   updateArtwork: (id: string, b: Partial<Pick<Artwork, "title" | "isPublic" | "tags">>) => request<{ artwork: Artwork }>(`/artworks/${id}`, "PATCH", b).then((r) => r.artwork),

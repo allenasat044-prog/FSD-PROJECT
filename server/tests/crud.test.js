@@ -33,6 +33,16 @@ test("auth + artwork + preset CRUD flow", { skip: !uri && "set MONGO_URI_TEST to
   assert.equal((await request(app).patch(`/api/artworks/${id}`).set(auth).send({ isPublic: true, title: "Renamed" })).body.artwork.title, "Renamed");
   assert.equal((await request(app).get("/api/artworks?scope=public")).body.total, 1);
   assert.equal((await request(app).get("/api/artworks?scope=mine").set(auth)).body.total, 1);
+  // LIKES: must be signed in, toggles on/off, shows up in sorting and the "liked" scope
+  assert.equal((await request(app).post(`/api/artworks/${id}/like`)).status, 401);
+  const liked = await request(app).post(`/api/artworks/${id}/like`).set(auth);
+  assert.deepEqual(liked.body, { liked: true, likeCount: 1 });
+  assert.equal((await request(app).get(`/api/artworks/${id}`).set(auth)).body.artwork.likedByMe, true);
+  assert.equal((await request(app).get(`/api/artworks/${id}`)).body.artwork.likedByMe, false);
+  assert.equal((await request(app).get("/api/artworks?scope=liked").set(auth)).body.total, 1);
+  assert.equal((await request(app).get("/api/artworks?scope=public&sort=top&source=image")).body.items[0].likeCount, 1);
+  assert.equal((await request(app).get("/api/artworks?scope=public&source=camera")).body.total, 0);
+  assert.deepEqual((await request(app).post(`/api/artworks/${id}/like`).set(auth)).body, { liked: false, likeCount: 0 });
   // DELETE
   assert.equal((await request(app).delete(`/api/artworks/${id}`).set(auth)).status, 204);
   assert.equal((await request(app).get(`/api/artworks/${id}`).set(auth)).status, 404);

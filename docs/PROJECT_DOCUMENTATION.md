@@ -66,7 +66,7 @@ sequenceDiagram
   U->>U: Show "Saved to your gallery"
 ```
 
-**Frontend / backend separation:** `client/` and `server/` are independent npm projects. They only share the HTTP contract in section 6. In development Vite proxies `/api` to `http://localhost:5000`; in production set `VITE_API_URL`.
+**Frontend / backend separation:** `client/` and `server/` are independent npm projects. They only share the HTTP contract in section 6. In development Vite proxies `/api` to `http://localhost:5001`; in production set `VITE_API_URL`.
 
 ## 4. Folder structure
 ```
@@ -114,7 +114,7 @@ Relationships: one user → many artworks, one user → many presets (referenced
 **Design choice:** the art is stored as text inside the artwork document (≈ 5–125 KB, far below MongoDB's 16 MB limit). The heavy `text` field is excluded from list queries (`select("-text")`) and only returned by `GET /api/artworks/:id`.
 
 ## 6. REST API details
-Base URL: `http://localhost:5000/api` · Body/response format: JSON · Auth: `Authorization: Bearer <token>`
+Base URL: `http://localhost:5001/api` · Body/response format: JSON · Auth: `Authorization: Bearer <token>`
 Errors always look like `{ "error": { "message": "...", "details": [ { "field", "message" } ] } }`.
 
 | Method | Endpoint | Auth | Description | Success | Errors |

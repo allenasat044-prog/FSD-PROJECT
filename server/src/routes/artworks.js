@@ -10,4 +10,5 @@ r.get("/:id", optionalAuth, c.getOne);
 r.post("/", requireAuth, validate(artworkCreateSchema), c.create);
 r.patch("/:id", requireAuth, validate(artworkUpdateSchema), c.update);
 r.delete("/:id", requireAuth, c.remove);
+r.post("/:id/like", requireAuth, c.toggleLike);
 export default r;

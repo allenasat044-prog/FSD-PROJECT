@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/* shadcn/ui tokens — the site is dark-only, so these are the dark values (zinc palette). */
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --card: 240 6% 6%;
+    --card-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 6% 10%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 240 4% 16%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 240 5% 65%;
+  }
+  * { @apply border-border; }
+}
+
 :root { color-scheme: dark; }
 html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 body { margin: 0; background: #000; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
