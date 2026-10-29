@@ -432,16 +432,7 @@ Manual testing: Postman / Thunder Client for every endpoint (success, invalid in
 | [**Rishu Gupta**](https://github.com/vampire0011) | MongoDB & Database | Schema design, Mongoose models, queries, indexes, relationships, seed data |
 | [**Priyanshu Kumar**](https://github.com/Priyanshu1115) | Authentication, Integration, Testing & Deployment | JWT + bcrypt auth, social sign-in, frontend ↔ backend integration, API testing, hosting, Git workflow |
 
-How the roles depend on each other:
 
-| From → To | What is exchanged |
-|---|---|
-| Rishu → Shashank | Mongoose models the controllers use for every query |
-| Shashank → Pankaj | API contract: URLs, request bodies, response JSON, status codes |
-| Priyanshu → Pankaj & Shashank | Login token flow: server issues JWT, client stores and sends it |
-| Everyone → Priyanshu | Working modules to integrate, test and deploy |
-
-Per-member responsibilities, concepts to know, code to walk through and likely questions are in [`docs/TEAM_ROLES_GUIDE.md`](./docs/TEAM_ROLES_GUIDE.md).
 
 ---
 
