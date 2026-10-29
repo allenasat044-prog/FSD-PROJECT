@@ -26,8 +26,7 @@
 | 📘 **Project Report** (architecture, roles, technical design) | [`Project-Report.pdf`](./Project-Report.pdf) |
 | 🎞️ **Project Presentation** (PDF) | [`Project-Presentation.pdf`](./Project-Presentation.pdf) |
 | 🎨 **Presentation on Canva** (live slides) | [canva.link/j3mpdkxmngtvhqc](https://canva.link/j3mpdkxmngtvhqc) |
-| 🧭 **Detailed guide & team roles** (what each member owns and must know) | [`docs/TEAM_ROLES_GUIDE.md`](./docs/TEAM_ROLES_GUIDE.md) |
-| 🗂️ **Earlier documentation** (viva questions, demo script) | [`docs/PROJECT_DOCUMENTATION.md`](./docs/PROJECT_DOCUMENTATION.md) |
+
 
 ---
 
